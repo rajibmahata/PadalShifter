@@ -1,0 +1,256 @@
+﻿@using System.Globalization
+@model IEnumerable<PedalShifter.Data.Entities.HostOpenHour>
+
+
+
+@foreach (DayOfWeek day in (DayOfWeek[])Enum.GetValues(typeof(DayOfWeek)))
+{
+    var clockQuery = from offset in Enumerable.Range(0, 48)
+                     select TimeSpan.FromMinutes(30 * offset);
+    IEnumerable<SelectListItem> StartOrEndTimeList = clockQuery
+           .Select(s =>
+               new SelectListItem
+               {
+                   Text = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")),
+                   Value = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US"))
+               });
+
+    var hostopenhours = Model.ToList().FirstOrDefault(x => x.Day.ToUpper() == day.ToString().ToUpper());
+    if (hostopenhours != null)
+    {
+        var StartTimeList = clockQuery
+            .Select(s =>
+                new SelectListItem
+                {
+                    Selected = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")) == DateTime.Parse(hostopenhours.StartTime.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")),
+                    Text = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")),
+                    Value = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US"))
+                });
+        var EndTimeList = clockQuery
+            .Select(s =>
+                new SelectListItem
+                {
+                    Selected = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")) == DateTime.Parse(hostopenhours.EndTime.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")),
+                    Text = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")),
+                    Value = DateTime.Parse(s.ToString()).ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US"))
+                });
+        <div class="accordion-item">
+            <div class="accordion-top field-check">
+                <label for="@day">
+                    <input type="checkbox" name="open_hours" id="chk_open_hours_@day" value="@day">@day
+                    <span class="checkmark">
+                        <i class="la la-check"></i>
+                    </span>
+                </label>
+                <span>Closed</span>
+            </div>
+            <div class="accordion-bot">
+                <div class="field-inline">
+                    <div class="row col-12">
+                        <div class="col-5">
+                            <div class="field-group field-select">
+                                @*<input type="time" id="open_time_@day" value="@hostopenhours.StartTime" />*@
+                                @Html.DropDownList("open_time_" + day, StartTimeList, new { @id = "open_time_" + day, name = "open_time_" + day, @onchange = "OpenTimeChange(this,'" + day + "')" })
+                                <i class="la la-angle-down"></i>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="field-group field-select">
+                                @*<input type="time" id="close_time_@day" value="@hostopenhours.EndTime" />*@
+                                @Html.DropDownList("close_time_" + day, EndTimeList, new { @id = "close_time_" + day, name = "close_time_" + day })
+                                <i class="la la-angle-down"></i>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button id="update-HostOpenHours" class="btn offset-item animate float-right" onclick="SaveHostOpenHours('@hostopenhours.Id','@day')">Save </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="accordion-item">
+            <div class="accordion-top field-check">
+                <label for="@day">
+                    <input type="hidden" id="Id_@day" value="" />
+                    <input type="checkbox" name="open_hours" id="@day" value="@day">@day
+                    <span class="checkmark">
+                        <i class="la la-check"></i>
+                    </span>
+                </label>
+                <span>Closed</span>
+            </div>
+            <div class="accordion-bot">
+                <div class="field-inline">
+                    <div class="row col-12">
+                        <div class="col-5">
+                            <div class="field-group field-select">
+                                @*<input type="time" id="open_time_@day" />*@
+                                @Html.DropDownList("open_time_" + day, StartOrEndTimeList, new { @id = "open_time_" + day, name = "open_time_" + day, @onchange = "OpenTimeChange(this,'" + day + "')" })
+                                <i class="la la-angle-down"></i>
+                                @*<select name="open_time_@day" id="open_time_@day">
+                                        <option value="00:00">00:00 AM</option>
+                                        <option value="01:00">01:00 AM</option>
+                                        <option value="01:30">01:30 AM</option>
+                                        <option value="02:00">02:00 AM</option>
+                                        <option value="02:30">02:30 AM</option>
+                                        <option value="03:00">03:00 AM</option>
+                                        <option value="03:30">03:30 AM</option>
+                                        <option value="04:00">04:00 AM</option>
+                                        <option value="04:30">04:30 AM</option>
+                                        <option value="05:00">05:00 AM</option>
+                                        <option value="05:30">05:30 AM</option>
+                                        <option value="06:00">06:00 AM</option>
+                                        <option value="06:30">06:30 AM</option>
+                                        <option value="07:00">07:00 AM</option>
+                                        <option value="07:30">07:30 AM</option>
+                                        <option value="08:00">08:00 AM</option>
+                                        <option value="08:30">08:30 AM</option>
+                                        <option value="09:00">09:00 AM</option>
+                                        <option value="09:30">09:30 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="10:30">10:30 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="11:30">11:30 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="12:30">12:30 PM</option>
+                                        <option value="13:00">01:00 PM</option>
+                                        <option value="13:30">01:30 PM</option>
+                                        <option value="14:00">02:00 PM</option>
+                                        <option value="14:30">02:30 PM</option>
+                                        <option value="15:00">03:00 PM</option>
+                                        <option value="15:30">03:30 PM</option>
+                                        <option value="16:00">04:00 PM</option>
+                                        <option value="16:30">04:30 PM</option>
+                                        <option value="05PM">05:00 PM</option>
+                                        <option value="06PM">06:00 PM</option>
+                                        <option value="07PM">07:00 PM</option>
+                                        <option value="08PM">08:00 PM</option>
+                                        <option value="09PM">09:00 PM</option>
+                                        <option value="10PM">10:00 PM</option>
+                                        <option value="11PM">11:00 PM</option>
+                                    </select>*@
+                                <i class="la la-angle-down"></i>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="field-group field-select">
+                                @*<input type="time" id="close_time_@day" />*@
+                                @Html.DropDownList("close_time_" + day, StartOrEndTimeList, new { @id = "close_time_" + day, name = "close_time_" + day })
+                                <i class="la la-angle-down"></i>
+                                @*<select name="close_time" id="close_time">
+                                        <option value="00AM">00:00 AM</option>
+                                        <option value="01AM">01:00 AM</option>
+                                        <option value="02AM">02:00 AM</option>
+                                        <option value="03AM">03:00 AM</option>
+                                        <option value="04AM">04:00 AM</option>
+                                        <option value="05AM">05:00 AM</option>
+                                        <option value="06AM">06:00 AM</option>
+                                        <option value="07AM">07:00 AM</option>
+                                        <option value="08AM">08:00 AM</option>
+                                        <option value="09AM">09:00 AM</option>
+                                        <option value="10AM">10:00 AM</option>
+                                        <option value="11AM">11:00 AM</option>
+                                        <option value="12PM">12:00 PM</option>
+                                        <option value="01PM">01:00 PM</option>
+                                        <option value="02PM">02:00 PM</option>
+                                        <option value="03PM">03:00 PM</option>
+                                        <option value="04PM">04:00 PM</option>
+                                        <option value="05PM">05:00 PM</option>
+                                        <option value="06PM">06:00 PM</option>
+                                        <option value="07PM">07:00 PM</option>
+                                        <option value="08PM">08:00 PM</option>
+                                        <option value="09PM">09:00 PM</option>
+                                        <option value="10PM">10:00 PM</option>
+                                        <option value="11PM">11:00 PM</option>
+                                    </select>*@
+                                @*<i class="la la-angle-down"></i>*@
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button id="update-HostOpenHours" class="btn offset-item animate float-right" onclick="SaveHostOpenHours('0','@day')">Save </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<script>
+    function SaveHostOpenHours(id, day) {
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        $.ajax({
+            type: "POST",
+            url: "/Host/UpdateHostOpenHours",
+            data: {
+                __RequestVerificationToken: token,
+                "Id": id,
+                "HostId": $("#Id").val(),
+                "Day": day,
+                "StartTime": $("#open_time_" + day).val(),
+                "EndTime": $("#close_time_" + day).val()
+            },
+            success: function (response) {
+                Swal.fire('Awesome!', 'Open hours has saved for ' + day + '.', 'success')
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response.responseText);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response.responseText);
+            }
+        });
+    };
+
+    function OpenTimeChange(opentime, day) {
+               var CloseTimeSelect = $('#close_time_'+day);
+        CloseTimeSelect.empty();
+                if (opentime.value != null && opentime.value != '') {
+                    $.getJSON('@Url.Action("GetCloseTime", "Common")', { startTime: opentime.value }, function (endTimes) {
+                        if (endTimes != null && !jQuery.isEmptyObject(endTimes))
+                        {
+
+                            //regionsSelect.append($('<option/>', {
+                            //    value: null,
+                            //    text: ""
+                            //}));
+                            $.each(endTimes, function (index, endTime) {
+                                CloseTimeSelect.append($('<option/>', {
+                                    value: endTime.value,
+                                    text: endTime.text
+                                }));
+                            });
+                        };
+                    });
+                }
+    }
+
+    function CloseTimeChange(closeTime, day) {
+        var OpenTimeSelect = $('#open_time_'+day);
+        OpenTimeSelect.empty();
+        if (closeTime.value != null && closeTime.value != '') {
+            $.getJSON('@Url.Action("GetOpenTime", "Common")', { closeTime: closeTime.value }, function (openTimes) {
+                if (openTimes != null && !jQuery.isEmptyObject(openTimes))
+                        {
+
+                            //regionsSelect.append($('<option/>', {
+                            //    value: null,
+                            //    text: ""
+                            //}));
+                    $.each(openTimes, function (index, openTime) {
+                                OpenTimeSelect.append($('<option/>', {
+                                    value: openTime.value,
+                                    text: openTime.text
+                                }));
+                            });
+                        };
+                    });
+                }
+    }
+</script>

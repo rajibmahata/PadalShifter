@@ -1,0 +1,81 @@
+﻿.btn-secondary {
+    background-color: #fff;
+    color: #23d3d3;
+    border: 1px solid #23d3d3;
+}
+
+.btn-primary, .btn-primary:hover {
+    border: 1px solid #23d3d3;
+}
+
+
+.listing-main .listing-nav {
+    background-color: transparent;
+    border: none;
+    top: 200px;
+}
+
+#location-map {
+    height: 500px;
+}
+
+.upload-form {
+    max-width: 860px;
+}
+
+.listing-main .listing-nav.is_footer {
+    position: fixed;
+}
+
+.listing-box-default-input {
+    border: 1px solid #eeeeee;
+    background-color: #ffffff;
+    padding: 30px;
+    margin-bottom: 15px;
+}
+
+.modal-content{
+    padding: 2rem;
+}
+
+.modal-dialog.listing-dialog{
+    max-width: 1000px !important;
+}
+
+.modal-dialog.listing-dialog img{
+    border-radius: 10px;
+}
+
+.modal h2 {
+    font-size: 2.5rem;
+}
+
+.modal h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.modal .listing-property {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.mapboxgl-ctrl-geocoder--input {
+    padding: 6px 35px !important;
+}
+
+.listing__author__avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+}
+
+.archive-city .col-right {
+    flex: 0 0 55% !important;
+    max-width: 55% !important;
+}

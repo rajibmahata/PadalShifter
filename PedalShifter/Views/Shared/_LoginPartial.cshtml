@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a title="Account" href="#">
+            <i class="las la-user la-24-white"></i>
+            <span>Account</span>
+        </a>
+        <ul class="sub-menu">
+            <li class="text-center">@User.Identity.Name</li>
+            <li><a asp-controller="Host" asp-action="Dashboard">Dashboard</a></li>
+            <li><a asp-controller="Host" asp-action="Listings">My Listings</a></li>
+            <li>
+                <div class="right-header__button btn">
+                    <a title="Add place" asp-controller="Account" asp-action="Logout">
+                        <span>Log Out</span>
+                    </a>
+                </div><!-- .right-header__button -->
+            </li>
+        </ul>
+    </li>
+
+}
+else
+{
+    <li class="right-header__button btn">
+        <a title="Add place" asp-controller="Account" asp-action="Login">
+            <i class="las la-user la-24-white"></i>
+            <span>Log In</span>
+        </a>
+    </li><!-- .right-header__button -->
+
+}

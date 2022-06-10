@@ -1,0 +1,128 @@
+﻿@model PedalShifter.Data.ViewModels.BikeViewModel
+@{
+    Layout = "_HostLayout";
+    ViewData["Title"] = "New Listing";
+}
+<div class="listing-main">
+    <div class="listing-nav">
+        <div class="listing-menu nav-scroll">
+            <ul>
+                <li class="active"><a href="#general"><span class="icon"><i class="la la-cog"></i></span><span>General</span></a></li>
+                <li><a href="#categories"><span class="icon"><i class="la la-wifi"></i></span><span>Categories</span></a></li>
+                <li><a href="#media" title="Media"><span class="icon"><i class="la la-image"></i></span><span>Media</span></a></li>
+            </ul>
+        </div>
+    </div><!-- .listing-nav -->
+    <div class="listing-content">
+        <h2>Create a New Listing</h2>
+        <form method="post" asp-controller="Host" asp-action="NewListing" class="upload-form" enctype="multipart/form-data">
+            @Html.ValidationSummary()
+            <div class="listing-box" id="general">
+                <h3>General</h3>
+                <div class="field-inline">
+                    <div class="field-group field-input">
+                        <label for="place_name">Place Name</label>
+                        <input type="text" placeholder="Bike Name" asp-for="Name">
+                    </div>
+                    <div class="field-group field-select">
+                        <label for="place_name">Daily Rate</label>
+                        <input type="number" placeholder="$0.00" asp-for="DailyRate">
+                    </div>
+                </div>
+                <div class="field-group">
+                    <h4 class="label">Description</h4>
+                    <textarea asp-for="Description"></textarea>
+                </div>
+            </div><!-- .listing-box -->
+            <div class="listing-box" id="categories">
+                <h3>Categories</h3>
+                <div class="field-group">
+                    <label for="place_socials">Category</label>
+                    <div class="field-clone">
+                        <div>
+                            <div class="field-group field-select">
+                                <select asp-for="Category" id="categories-select">
+                                    <option value="1">Mountain</option>
+                                    <option value="2">Road</option>
+                                    <option value="3">Gravel</option>
+                                    <option value="4">City</option>
+                                </select>
+                                <i class="la la-angle-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="category-items" class="field-group field-check">
+                    <label class="mountain" for="enduro">
+                        <input type="checkbox" name="enduro" id="enduro" value="enduro">Enduro
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+                    <label class="mountain" for="xc">
+                        <input type="checkbox" name="xc" id="xc" value="enduro">Cross Country
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+                    <label class="mountain" for="trail">
+                        <input type="checkbox" name="trail" id="trail" value="trail">Trail
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+                    <label class="mountain" for="hardtail">
+                        <input type="checkbox" name="hardtail" id="hardtail" value="enduro">Hardtail
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+
+                    <label class="mountain" for="fullsuspension">
+                        <input type="checkbox" name="fullsuspension" id="fullsuspension" value="fullsuspension">Full Suspension
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+
+                    <label for="aluminum">
+                        <input type="checkbox" name="aluminum" id="aluminum" value="aluminum">Aluminum
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+                    <label for="carbon">
+                        <input type="checkbox" name="carbon" id="carbon" value="Carbon">Carbon
+                        <span class="checkmark">
+                            <i class="la la-check"></i>
+                        </span>
+                    </label>
+                </div>
+            </div><!-- .listing-box -->
+            <div class="listing-box" id="media">
+                <h3>Media</h3>
+                <div class="field-group field-file">
+                    <label for="cover_img">Cover image</label>
+                    <label for="cover_img" class="">
+                        <input type="file" asp-for="MainImage" class="upload-file" data-max-size="1024000">
+                    </label>
+                    <div class="field-note">Maximum file size: 1 MB.</div>
+                </div>
+            </div><!-- .listing-box -->
+            <div class="field-group field-submit">
+                <button type="submit" name="submit" value="Submit" class="btn">Create Listing</button>
+            </div>
+        </form>
+    </div><!-- .listing-content -->
+</div>
+<script>
+
+    $('#categories-select').on('change', function () {
+        if (this.value == 1) {
+            $('#category-items .mountain').show();
+        }
+        else {
+            $('#category-items .mountain').hide();
+        }
+    });
+</script>

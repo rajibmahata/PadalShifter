@@ -1,0 +1,56 @@
+﻿@model PedalShifter.Data.Entities.UserLogin
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('/login/images/bg-01.jpg');">
+            <div class="wrap-login100">
+                <form class="login100-form validate-form" method="post" action="/Account/Login">
+                    <h1 class="mb-5" style="text-align: center;font-size: 3.5rem;">
+                        <span style=" color: white;">Pedal</span>Shifter.
+                    </h1>
+
+                    @Html.ValidationSummary()
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter username">
+                        <input class="input100" asp-for="Email" placeholder="Email">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100" asp-for="Password" placeholder="Password">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+
+                    <div class="contact100-form-checkbox">
+                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                        <label class="label-checkbox100" for="ckb1">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn mb-3">
+                            Log In
+                        </button>
+                        <a class="txt1 mx-2" asp-controller="Account" asp-action="Register">
+                            Create a New Account
+                        </a>
+                    </div>
+
+                    <div class="text-center p-t-90">
+                        <a class="txt1 mx-2" href="#">
+                            Forgot Password?
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="dropDownSelect1"></div>
+
